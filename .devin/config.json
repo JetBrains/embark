@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "jbcontext": {
+      "type": "stdio",
+      "command": "jbcontext",
+      "args": [
+        "mcp"
+      ]
+    }
+  },
+  "permissions": {
+    "allow": [
+      "mcp__jbcontext__*",
+      "Exec(jbcontext)"
+    ]
+  }
+}

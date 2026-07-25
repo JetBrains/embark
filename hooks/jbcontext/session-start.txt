@@ -1,0 +1,42 @@
+# Tools
+
+## Semantic Code Search (jbcontext)
+
+You have access to JetBrains Context (`jbcontext`) for semantic code search through:
+- the `/context-search` skill (or `/context-research`, `/context-review`, etc.),
+- the MCP tool `mcp__jbcontext__code_search`,
+- or the CLI command `jbcontext search "<query>"`.
+
+Use it to find code by meaning, not just keywords.
+
+### When to use
+
+`jbcontext` search is a **code-discovery** tool. Reach for it only when a task requires finding or understanding code whose location you don't already know.
+
+Skip it — go straight to the right tool — when:
+- the task names the exact file, class, or symbol (keyword `grep` is faster);
+- the relevant file is already open or identified;
+- the task doesn't involve locating code at all — git operations (rebase, merge, commit), running tests or builds, shell/statusline/config setup, or reviewing a diff you already have.
+
+### How to use it
+
+- Start with **one** broad `jbcontext search` or `mcp__jbcontext__code_search` before planning, editing, or exact search in unfamiliar code when you do not yet know the right file, subsystem, implementation, or related test.
+- Use one focused natural-language query per search.
+- Do not start with `grep`, `ripgrep`, or `find` when the search problem is still semantic or exploratory.
+- Inspect the first relevant file or directory before issuing another broad semantic search.
+- If the first hit is relevant but incomplete, inspect neighboring files locally in that same directory or subsystem before any semantic retry.
+- After the first relevant file or path is known, switch to direct file reads and exact search to inspect nearby code.
+- If a semantic retry is still needed, narrow it:
+  - CLI: `jbcontext search -p <path> "<query>"` (path relative to project root)
+  - MCP: set `pathFilter` to the directory of the best first hit.
+- Do not issue a second broad `jbcontext search`.
+
+### Deep exploration: `/context-explorer` first
+
+For broader or multi-step exploration (mapping a subsystem, tracing an execution path, or when the task describes behavior or intent without naming an exact file or symbol), your **FIRST** code-discovery step MUST be the `/context-explorer` subagent. Spawn it with a 1-2 sentence intent and let it run up to 3 semantic searches in its own context. It returns concrete `file:line` references with inline code snippets, so you do not burn your own context on intermediate reads.
+
+Use `/context-search` or `mcp__jbcontext__code_search` directly only for focused single-shot discovery. Do not start with your own `grep`/`glob`/`bash` searches or git history before trying `/context-explorer` or one broad `jbcontext search`.
+
+### Index status
+
+If `jbcontext` search is slow or returns no results, the project may still be indexing. Run `jbcontext index` and wait for it to complete, or check `jbcontext status`.

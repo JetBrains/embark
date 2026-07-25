@@ -1,0 +1,74 @@
+{
+  "SessionStart": [
+    {
+      "matcher": "",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node \"hooks/jbcontext/jbcontext-devin.js\" SessionStart",
+          "timeout": 10
+        }
+      ]
+    }
+  ],
+  "SessionEnd": [
+    {
+      "matcher": "",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node \"hooks/jbcontext/jbcontext-devin.js\" SessionEnd",
+          "timeout": 2
+        }
+      ]
+    }
+  ],
+  "PostCompaction": [
+    {
+      "matcher": "",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node \"hooks/jbcontext/jbcontext-devin.js\" PostCompaction",
+          "timeout": 2
+        }
+      ]
+    }
+  ],
+  "PreToolUse": [
+    {
+      "matcher": "",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "JBCONTEXT_HOOK_MODE=${JBCONTEXT_HOOK_MODE:-ENFORCE_SOFT} node \"hooks/jbcontext/jbcontext-devin.js\" PreToolUse",
+          "timeout": 2
+        }
+      ]
+    }
+  ],
+  "PostToolUse": [
+    {
+      "matcher": "",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node \"hooks/jbcontext/jbcontext-devin.js\" PostToolUse",
+          "timeout": 2
+        }
+      ]
+    }
+  ],
+  "UserPromptSubmit": [
+    {
+      "matcher": "",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node \"hooks/jbcontext/jbcontext-devin.js\" UserPromptSubmit",
+          "timeout": 2
+        }
+      ]
+    }
+  ]
+}

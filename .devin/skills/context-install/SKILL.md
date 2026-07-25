@@ -1,6 +1,8 @@
 ---
 name: context-install
-description: Install jbcontext and complete first-time setup — login and configure agent integration. Use when `jbcontext` is not found or the user asks to install jbcontext.
+description: "Install jbcontext and complete first-time setup — login and configure agent integration. Use when jbcontext is not found or the user asks to install jbcontext."
+allowed-tools: [exec]
+triggers: [user]
 ---
 
 # Install and set up jbcontext
@@ -24,7 +26,7 @@ Use this skill to install the jbcontext CLI and finish first-time setup (login, 
 ### macOS / Linux
 
 ```bash
-curl -fsSL https://download.jetbrains.com/jetbrains-context/release/download-jbcontext.sh | bash
+exec: curl -fsSL https://download.jetbrains.com/jetbrains-context/release/download-jbcontext.sh | bash
 ```
 
 ### Windows (PowerShell)
@@ -36,7 +38,7 @@ irm https://download.jetbrains.com/jetbrains-context/release/download-jbcontext.
 ## Verify installation
 
 ```bash
-jbcontext --version
+exec: jbcontext --version
 ```
 
 ## Common follow-ups
@@ -46,7 +48,7 @@ jbcontext --version
 The user is not logged in.
 
 ```bash
-jbcontext login
+exec: jbcontext login
 ```
 
 ### `404`
@@ -54,7 +56,7 @@ jbcontext login
 There is no index on the server.
 
 ```bash
-jbcontext index
+exec: jbcontext index
 ```
 
 ### Agent setup
@@ -64,28 +66,31 @@ If the user also wants jbcontext configured for an agent, use `jbcontext setup-a
 Claude non-interactive setup:
 
 ```bash
-jbcontext setup-agent --agent=CLAUDE --auto --non-interactive
+exec: jbcontext setup-agent --agent=CLAUDE --auto --non-interactive
 ```
 
 Codex non-interactive setup:
 
 ```bash
-jbcontext setup-agent --agent=CODEX --auto --non-interactive
-```
-
-Devin CLI setup (the native `jbcontext setup-agent` does not yet support `--agent=DEVIN`; use the bundled installer):
-
-```bash
-./scripts/setup-agent-devin.sh --agent=DEVIN --scope=PROJECT --non-interactive
-```
-
-User-scope Devin setup:
-
-```bash
-./scripts/setup-agent-devin.sh --agent=DEVIN --scope=USER --non-interactive
+exec: jbcontext setup-agent --agent=CODEX --auto --non-interactive
 ```
 
 Study help for any other agents and options:
-```aiignore
-jbcontext setup-agent --help
+
+```bash
+exec: jbcontext setup-agent --help
+```
+
+### Devin CLI
+
+`jbcontext setup-agent` does not yet include a `--agent=DEVIN` target. Use the bundled installer:
+
+```bash
+exec: ./scripts/setup-agent-devin.sh --agent=DEVIN --scope=PROJECT --non-interactive
+```
+
+User scope:
+
+```bash
+exec: ./scripts/setup-agent-devin.sh --agent=DEVIN --scope=USER --non-interactive
 ```
