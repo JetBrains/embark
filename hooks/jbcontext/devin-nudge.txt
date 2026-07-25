@@ -1,0 +1,1 @@
+[jbcontext] local search is blocked until semantic search is used first. Run "jbcontext search '<query>'" or "mcp__jbcontext__code_search", read one result, then retry grep/find.

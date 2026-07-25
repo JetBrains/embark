@@ -103,6 +103,7 @@ function runIndex() {
 }
 
 const SESSION_START_FILE = path.join(__dirname, 'session-start.txt');
+const NUDGE_FILE = path.join(__dirname, 'devin-nudge.txt');
 const FALLBACK_SESSION_START_CONTEXT = `Use JetBrains Context for semantic code search. Start with one broad jbcontext search or mcp__jbcontext__code_search, read at least one returned file, inspect nearby code locally, and only then narrow with jbcontext search -p <path> or pathFilter. Do not start with grep/ripgrep/find or git history when the location is unknown.`;
 
 function sessionStartContext() {
@@ -164,7 +165,8 @@ function mapToolName(devinName) {
     case 'exec': return 'Bash';
     case 'read': return 'Read';
     case 'grep': return 'Grep';
-    case 'glob': return 'Glob';
+    case 'glob':
+    case 'find_file_by_name': return 'Glob';
     default: return devinName;
   }
 }
@@ -218,11 +220,11 @@ function buildSoftDenyOutput(payload, reason) {
   let updatedInput = null;
 
   if (toolName === 'exec') {
-    updatedInput = { command: `printf '%s\\n' ${JSON.stringify(message)}` };
+    updatedInput = { command: `cat ${JSON.stringify(NUDGE_FILE)}` };
   } else if (toolName === 'grep') {
-    updatedInput = { ...toolInput, pattern: '__JBCONTEXT_SUPPRESSED__', output_mode: 'content', max_results: 0 };
-  } else if (toolName === 'glob') {
-    updatedInput = { ...toolInput, pattern: '__JBCONTEXT_SUPPRESSED__' };
+    updatedInput = { ...toolInput, pattern: '.*', path: NUDGE_FILE, output_mode: 'content', max_results: 1 };
+  } else if (toolName === 'glob' || toolName === 'find_file_by_name') {
+    updatedInput = { ...toolInput, pattern: path.basename(NUDGE_FILE), path: path.relative(projectPath(), path.dirname(NUDGE_FILE)) };
   } else if (toolName === 'mcp__jbcontext__code_search') {
     updatedInput = { text: '__JBCONTEXT_SUPPRESSED__' };
   }
@@ -289,7 +291,7 @@ function shouldCallPreToolUse(payload) {
   const toolInput = payload.tool_input || {};
 
   if (toolName === 'mcp__jbcontext__code_search') return true;
-  if (toolName === 'grep' || toolName === 'glob') return true;
+  if (toolName === 'grep' || toolName === 'glob' || toolName === 'find_file_by_name') return true;
   if (toolName === 'exec') {
     const cmd = String(toolInput.command || '');
     if (cmd.includes('jbcontext search')) return true;
@@ -547,11 +549,33 @@ function selfTest() {
     });
     const out = JSON.parse(res.stdout || '{}');
     if (out.decision) throw new Error(`default blocked instead of no-op: ${res.stdout}`);
-    if (out.hookSpecificOutput?.updatedInput?.pattern !== '__JBCONTEXT_SUPPRESSED__') {
+    if (out.hookSpecificOutput?.updatedInput?.pattern !== '.*') {
       throw new Error(`default did not no-op grep: ${res.stdout}`);
+    }
+    if (out.hookSpecificOutput?.updatedInput?.path !== NUDGE_FILE) {
+      throw new Error(`default did not redirect grep to nudge file: ${res.stdout}`);
+    }
+    if (out.hookSpecificOutput?.updatedInput?.max_results !== 1) {
+      throw new Error(`default did not limit grep nudge to one line: ${res.stdout}`);
     }
     if (out.hookSpecificOutput?.updatedInput?.output_mode !== 'content') {
       throw new Error(`default did not switch grep output_mode: ${res.stdout}`);
+    }
+  });
+
+  check('PreToolUse find_file_by_name no-ops by default (ENFORCE_SOFT)', () => {
+    const res = invoke('PreToolUse', {
+      session_id: session('c2'),
+      tool_name: 'find_file_by_name',
+      tool_input: { pattern: 'src/**/*.rs' }
+    });
+    const out = JSON.parse(res.stdout || '{}');
+    if (out.decision) throw new Error(`default blocked instead of no-op: ${res.stdout}`);
+    if (out.hookSpecificOutput?.updatedInput?.pattern !== 'devin-nudge.txt') {
+      throw new Error(`default did not no-op find_file_by_name: ${res.stdout}`);
+    }
+    if (out.hookSpecificOutput?.updatedInput?.path !== 'hooks/jbcontext') {
+      throw new Error(`default did not redirect find_file_by_name to nudge dir: ${res.stdout}`);
     }
   });
 
@@ -668,8 +692,11 @@ function selfTest() {
     }, 'ENFORCE_SOFT');
     const out = JSON.parse(res.stdout || '{}');
     if (out.decision) throw new Error(`ENFORCE_SOFT blocked instead of no-op: ${res.stdout}`);
-    if (!out.hookSpecificOutput?.updatedInput?.command?.includes('printf')) {
+    if (!out.hookSpecificOutput?.updatedInput?.command?.includes('cat')) {
       throw new Error(`ENFORCE_SOFT did not no-op exec: ${res.stdout}`);
+    }
+    if (!out.hookSpecificOutput?.updatedInput?.command?.includes('devin-nudge')) {
+      throw new Error(`ENFORCE_SOFT did not redirect exec to nudge file: ${res.stdout}`);
     }
   });
 
