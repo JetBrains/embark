@@ -36,6 +36,7 @@ Add a Devin CLI installer and adapter to the official integration repo:
    assets that the installer copies into the user's Devin config.
 4. `session-start.txt` — workflow instructions injected via `SessionStart` and
    `PostCompaction` hooks.
+5. `devin-nudge.txt` — short nudge returned by blocked discovery tools.
 
 ### Key adapter features
 
@@ -43,6 +44,9 @@ Add a Devin CLI installer and adapter to the official integration repo:
   suppresses enforcement if the backend/index is unavailable.
 - **`ENFORCE_SOFT`**: rewrites blocked local-discovery tools to no-ops instead
   of cancelling the whole Devin cycle.
+- **Actionable nudge**: blocked `grep`/`glob`/`find_file_by_name`/`exec rg|find|git log`
+  return a short message from `devin-nudge.txt` telling the agent to use
+  `jbcontext search` first.
 - **RTK unwrapping**: `rtk rg` → `rg` so RTK and jbcontext compose cleanly.
 - **MCP `pathFilter` injection**: the MCP `code_search` tool currently returns
   no results when `pathFilter` is omitted; the adapter injects `pathFilter: "."`
@@ -59,8 +63,8 @@ Add a Devin CLI installer and adapter to the official integration repo:
 - [ ] `./scripts/setup-agent-devin.sh --agent=DEVIN --scope=PROJECT --non-interactive`
       produces a working `.devin/` directory for the current repo.
 - [ ] After installation, Devin calls `mcp__jbcontext__code_search` on the first
-      broad semantic search and does not start with `grep`/`rg`/`find`.
-- [ ] `node hooks/jbcontext/jbcontext-devin.js --self-test` passes.
+      broad semantic search and does not start with `grep`/`rg`/`find`/`find_file_by_name`.
+- [ ] `node hooks/jbcontext/jbcontext-devin.js --self-test` passes (16/16).
 
 ---
 
@@ -85,6 +89,8 @@ MCP + hooks architecture.
   and MCP `pathFilter` injection.
 - `hooks/jbcontext/session-start.txt` — workflow instructions injected at
   `SessionStart` and `PostCompaction`.
+- `hooks/jbcontext/devin-nudge.txt` — short actionable nudge returned by
+  blocked `grep`/`glob`/`find_file_by_name`/`exec` discovery tools.
 - `.devin/config.json` — registers the `jbcontext` MCP server and allows
   `mcp__jbcontext__*` and `Exec(jbcontext)`.
 - `.devin/hooks.v1.json` — hook manifest covering `SessionStart`, `SessionEnd`,
@@ -105,7 +111,7 @@ MCP + hooks architecture.
 
 Devin's `PreToolUse`/`PostToolUse` payloads use:
 
-- `tool_name`: `exec`, `read`, `grep`, `glob`, `mcp__jbcontext__code_search`
+- `tool_name`: `exec`, `read`, `grep`, `glob`, `find_file_by_name`, `mcp__jbcontext__code_search`
 - JSON shape close to, but not identical with, Claude's
 
 The `jbcontext hook` binary currently expects a Claude-shaped payload
@@ -120,8 +126,8 @@ command, unwraps `rtk` prefixes, and rewrites `ENFORCE_SOFT` blocks into Devin
 2. Run `./scripts/setup-agent-devin.sh --agent=DEVIN --scope=USER --non-interactive`.
 3. Launch `devin` in the project and ask a broad code-discovery question.
 4. Verify Devin calls `mcp__jbcontext__code_search` (or `/context-search`)
-   before `grep`/`rg`/`find`.
-5. Run `node hooks/jbcontext/jbcontext-devin.js --self-test` — 15/15 pass.
+   before `grep`/`rg`/`find`/`find_file_by_name`.
+5. Run `node hooks/jbcontext/jbcontext-devin.js --self-test` — 16/16 pass.
 
 ### Notes
 
@@ -133,6 +139,9 @@ command, unwraps `rtk` prefixes, and rewrites `ENFORCE_SOFT` blocks into Devin
   most MCP clients) currently read from the server's `tools/list` response.
   They are included for documentation and can be wired into `jbcontext mcp`
   once custom descriptions are supported.
+- Blocked discovery tools now return a short nudge from `devin-nudge.txt`
+  instead of an empty `__JBCONTEXT_SUPPRESSED__` placeholder, so the model
+  gets an actionable "use jbcontext first" message.
 ```
 
 ## Files changed vs upstream
@@ -155,6 +164,7 @@ After the contribution is accepted, the upstream repository should contain:
 hooks/
   jbcontext/
     jbcontext-devin.js
+    devin-nudge.txt
     session-start.txt
 scripts/
   setup-agent-devin.sh
