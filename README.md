@@ -1,6 +1,10 @@
-# jbcontext Instructions
+# JetBrains Context
 
-A collection of skills, agents, and instructions that integrate jbcontext into agents through hooks, MCP and Agents.md
+https://www.jetbrains.com/context/
+
+Give agents the codebase knowledge they need.
+
+This repository is a collection of skills, agents, and instructions that integrate jbcontext binary into agents through hooks, MCP and Agents.md
 
 ### Skills
 
