@@ -1,6 +1,6 @@
 # Single-query Claude Code benchmark
 
-`singe-query-bench-claude.sh` (macOS/Linux) and `singe-query-bench-claude.ps1` (Windows)
+`single-query-bench-claude.sh` (macOS/Linux) and `single-query-bench-claude.ps1` (Windows)
 measure the **cost and latency of one query in the interactive Claude Code TUI, with vs.
 without JetBrains Context**, in the **warm** steady state a real ongoing session experiences.
 
@@ -59,12 +59,12 @@ retrieval measurably changes the answer's cost and quality.
 
 ```bash
 # macOS / Linux
-./singe-query-bench-claude.sh [--model <id>] ["your query"]
+./single-query-bench-claude.sh [--model <id>] ["your query"]
 ```
 
 ```powershell
 # Windows
-./singe-query-bench-claude.ps1 [-Model <id>] [-Prompt "your query"]
+./single-query-bench-claude.ps1 [-Model <id>] [-Prompt "your query"]
 ```
 
 - Default model is `claude-opus-4-8`. If the query is omitted, you're prompted for it.
