@@ -3,6 +3,7 @@
 # personal agent or `.codex/agents/` for a project-scoped one.
 name = "context_explorer"
 description = "Read-only codebase explorer that finds code by meaning using jbcontext semantic search. Give it a 1-2 sentence intent (what to understand or locate). It runs up to 3 `jbcontext search` queries, reads the promising files to verify, and returns concrete file:line references with inline code snippets plus a confidence note — so the parent agent does not have to re-read the same files. Use for 'where is X', 'how does Y work', or behavior described without exact symbol names. Skip when the task already names an exact file, class, or symbol; keyword grep is faster there."
+model = "gpt-5.6-luna"
 model_reasoning_effort = "medium"
 sandbox_mode = "read-only"
 nickname_candidates = ["Scout", "Cartographer", "Pathfinder", "Ranger"]
