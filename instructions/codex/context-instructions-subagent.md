@@ -45,3 +45,8 @@ explicit instruction to spawn it:
 
 Skip the subagent and search inline (or grep) when you already know an
 exact relevant file, class, or symbol, or when a single query is obviously enough.
+
+### How to spawn it
+
+- Spawn it with: `spawn_agent(agent_type="context_explorer", fork_turns="none", message="<intent>")`
+- Always call `wait_agent` after spawning, or you'll never get its report and end up re-exploring everything yourself.
