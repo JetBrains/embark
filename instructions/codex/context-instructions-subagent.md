@@ -12,6 +12,12 @@ jbcontext search "<detailed and descriptive query>"
 jbcontext search -p <path> "<query>"  # <path> must be relative to the project root
 ```
 
+### Query Tips
+
+- Be descriptive: "Where is a function that validates user email addresses" > "email"
+- Include context: "Find error handling middleware for HTTP requests with logging"
+- Specify what you're looking for: "React component that renders a modal dialog"
+
 ### How to use it
 - Start with `jbcontext search` before planning, editing, or exact search in unfamiliar code when you do not yet know the right file, subsystem, implementation, or related test.
 - Use one focused natural-language query per search.
