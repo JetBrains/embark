@@ -36,13 +36,6 @@ explicit instruction to spawn it:
   search.
 - You need to map an unfamiliar subsystem, or trace an execution path across
   several files, before making a change.
-- You want to explore several angles at once — e.g. one `context_explorer` per
-  subsystem or per open question — and collect the results together.
 
-Skip the subagent and search inline (or grep) when the task already names an
-exact file, class, or symbol, or when a single query is obviously enough.
-
-Codex spawns subagents only when explicitly asked, so treat the criteria above as
-that ask: when a task matches, spawn `context_explorer` as part of carrying it
-out. The user can also request it directly at any time (for example, "use
-`context_explorer` to map the auth flow").
+Skip the subagent and search inline (or grep) when you already know an
+exact relevant file, class, or symbol, or when a single query is obviously enough.
