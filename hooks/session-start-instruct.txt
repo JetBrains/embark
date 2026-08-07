@@ -1,0 +1,1 @@
+Tip: when the relevant file is unknown, do one broad `jbcontext search` first, then read at least one returned file and inspect nearby code locally. If that still fails, do at most one narrowed retry: on CLI use `jbcontext search -p <path> ...` with the best hit's directory, and on MCP set `pathFilter`. Do not issue a second broad semantic search.
