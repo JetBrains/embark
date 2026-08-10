@@ -5,6 +5,12 @@
 You have access to the jbcontext MCP `code_search` tool for searching the codebase semantically.
 This tool can search for code snippets related in meaning to the search query and search objective.
 
+### Query Tips
+
+- Be descriptive: "Where is a function that validates user email addresses" > "email"
+- Include context: "Find error handling middleware for HTTP requests with logging"
+- Specify what you're looking for: "React component that renders a modal dialog"
+
 ### When to use
 
 `code_search` is a **code-discovery** tool. Reach for it only when a task requires finding or understanding code whose location you don't already know.
