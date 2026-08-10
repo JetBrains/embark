@@ -12,13 +12,17 @@ jbcontext search "<detailed and descriptive query>"
 jbcontext search -p <path> "<query>"  # <path> must be relative to the project root
 ```
 
+### Query Tips
+
+- Be descriptive: "Where is a function that validates user email addresses" > "email"
+- Include context: "Find error handling middleware for HTTP requests with logging"
+- Specify what you're looking for: "React component that renders a modal dialog"
+
 ### How to use it
 - Start with `jbcontext search` before planning, editing, or exact search in unfamiliar code when you do not yet know the right file, subsystem, implementation, or related test.
 - Use one focused natural-language query per search.
 - Do not start with grep, ripgrep, or find when the search problem is still semantic or exploratory.
-- Inspect the first relevant file or directory before issuing another broad semantic search.
-- Once you know the relevant file, symbol, or directory, switch to direct file reads or exact search for local inspection.
-- If you search again after finding a relevant area, narrow with `-p <path>`.
+- Once you get a relevant hit, switch to direct file reads — needing another search is a sign to delegate to `context_explorer` instead of searching again yourself.
 
 ## Subagent: `context_explorer`
 
@@ -29,20 +33,15 @@ returns concrete `file:line` references with inline code snippets and a
 confidence note — so this thread stays uncluttered by intermediate search output
 and does not have to re-read the same files.
 
-Spawn `context_explorer` when a task matches any of these — treat this as the
-explicit instruction to spawn it:
-- The task describes behavior or intent ("where is X", "how does Y work") without
-  naming an exact file or symbol, and answering it will likely take more than one
-  search.
-- You need to map an unfamiliar subsystem, or trace an execution path across
-  several files, before making a change.
-- You want to explore several angles at once — e.g. one `context_explorer` per
-  subsystem or per open question — and collect the results together.
+### How to spawn it
 
-Skip the subagent and search inline (or grep) when the task already names an
-exact file, class, or symbol, or when a single query is obviously enough.
+- Spawn it with: `spawn_agent(agent_type="context_explorer", fork_turns="none", message="<intent>")`
+- `spawn_agent` runs in the background — you can read a file you already know is relevant, check the environment, but don't perform exploration while it's running.
+- Always call `wait_agent` once that known work (if any) is done, otherwise you never get the report.
 
-Codex spawns subagents only when explicitly asked, so treat the criteria above as
-that ask: when a task matches, spawn `context_explorer` as part of carrying it
-out. The user can also request it directly at any time (for example, "use
-`context_explorer` to map the auth flow").
+
+## When to use `jbcontext search` CLI vs. `context_explorer` subagent
+
+If you're confident the discovery is multi-step — mapping an unfamiliar
+subsystem, or tracing across several files — spawn `context_explorer`
+directly. Otherwise, run `jbcontext search` first; if the results are not enough, delegate to `context_explorer`.
