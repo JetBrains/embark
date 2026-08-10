@@ -27,8 +27,8 @@ jbcontext search -p <path> "<query>"  # <path> must be relative to the project r
 
 ### Query Tips
 
-- Be descriptive: "function that validates user email addresses" > "email"
-- Include context: "error handling middleware for HTTP requests with logging"
+- Be descriptive: "Where is a function that validates user email addresses" > "email"
+- Include context: "Find error handling middleware for HTTP requests with logging"
 - Specify what you're looking for: "React component that renders a modal dialog"
 
 - Use one focused natural-language query per search.
