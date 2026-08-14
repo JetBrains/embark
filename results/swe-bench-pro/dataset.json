@@ -1,0 +1,8 @@
+{
+  "$comment": [
+    "SWE-bench Pro, run through the anti-cheat proxy (2026-08-07)."
+  ],
+  "name": "swe-bench-pro",
+  "sizeLabel": "XL",
+  "taskCount": 731
+}

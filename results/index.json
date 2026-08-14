@@ -1,0 +1,33 @@
+{
+  "$comment": [
+    "Manifest of the published eval results. It exists because neither way the CLI reads these files",
+    "can list a directory: a nativeCompile binary sees only what its resource whitelist names, and",
+    "`jbcontext setup-agent --prompts-location` fetches raw.githubusercontent.com paths one at a time.",
+    "So a dataset or arm that is not named here is invisible, and publishing a new one is a commit to",
+    "this file rather than a CLI release.",
+    "",
+    "Every name here is one path segment: it is interpolated into local paths under ~/.jbcontext/prompts",
+    "and the CLI refuses anything that could escape that directory.",
+    "",
+    "Layout, per dataset:",
+    "  <dataset>/dataset.json                       properties of the task set",
+    "  <dataset>/<harness>+<model>+<effort>/        one directory per measured cell",
+    "    baseline.json                              the arm run WITHOUT jbcontext",
+    "    jbcontext.json                             the arm run WITH it"
+  ],
+  "schema": "jbcontext-eval-results/1",
+  "datasets": [
+    {
+      "name": "monorepo-swebench",
+      "arms": ["claude-code+opus+high"]
+    },
+    {
+      "name": "oss-swe-bench",
+      "arms": ["claude-code+opus+high"]
+    },
+    {
+      "name": "swe-bench-pro",
+      "arms": ["codex+gpt-5.3-codex+high"]
+    }
+  ]
+}

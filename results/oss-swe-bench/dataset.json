@@ -1,0 +1,12 @@
+{
+  "$comment": [
+    "OSS SWE-bench: 205 Java/C#/Python tasks in repositories of roughly 1K-20K files.",
+    "",
+    "Pending per-task size labels this is the whole dataset at one label; once the arms carry per-task",
+    "`sizeLabel` it will split into XS and S rows on its own, with no change here."
+  ],
+  "name": "oss-swe-bench",
+  "sizeLabel": "XS",
+  "loc": 900000,
+  "taskCount": 205
+}

@@ -1,0 +1,24 @@
+{
+  "$comment": [
+    "FIRST ITERATION — the ratios against jbcontext.json are a measured REGRESSION: +7% cost, +1%",
+    "exploration time, -5 points of task resolution. The absolute per-task means below are placeholders",
+    "chosen to reproduce exactly those ratios, and are to be replaced by a harbor_eval_summary export.",
+    "",
+    "This cell is why effects are signed and why they are keyed by harness. Codex explores MORE with",
+    "jbcontext here (~1.3 search calls per task against Claude's ~0.64, plus extra Grep and Bash on the",
+    "main agent), and a projection that could not store a negative number could not report it at all.",
+    "It belongs to Codex alone: it is deliberately not carried over to any other harness."
+  ],
+  "schema": "jbcontext-eval-arm/1",
+  "arm": "baseline",
+  "dataset": "swe-bench-pro",
+  "harness": "codex",
+  "model": "gpt-5.6-sol",
+  "effort": "xhigh",
+  "taskCount": 731,
+  "resolvedRate": 0.45,
+  "metrics": {
+    "costUsd": 1.0,
+    "latencyMs": 100000
+  }
+}
