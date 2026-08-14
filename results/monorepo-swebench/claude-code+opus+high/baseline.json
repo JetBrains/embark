@@ -1,0 +1,25 @@
+{
+  "$comment": [
+    "FIRST ITERATION — the ratios against jbcontext.json are the measured V1.2 Table 1 figures",
+    "(EMBARK-1136): cost -34%, turns -41%, exploration time -15%, task resolution unchanged. The",
+    "absolute per-task means below are placeholders chosen to reproduce exactly those ratios, and are",
+    "to be replaced by a harbor_eval_summary export. `run` is omitted rather than invented, so rows",
+    "derived from this cell carry no run reference yet.",
+    "",
+    "Tool calls and tokens are absent from the V1.2 monorepo table, so they are absent here — the",
+    "projection then reports them as unmeasured instead of as an effect of zero."
+  ],
+  "schema": "jbcontext-eval-arm/1",
+  "arm": "baseline",
+  "dataset": "monorepo-swebench",
+  "harness": "claude-code",
+  "model": "claude-opus-4-8",
+  "effort": "high",
+  "taskCount": 175,
+  "resolvedRate": 0.40,
+  "metrics": {
+    "costUsd": 2.0,
+    "turns": 20.0,
+    "latencyMs": 600000
+  }
+}

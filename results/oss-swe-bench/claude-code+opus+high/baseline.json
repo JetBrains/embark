@@ -1,0 +1,26 @@
+{
+  "$comment": [
+    "FIRST ITERATION — the ratios against jbcontext.json are the measured V1.2 Table 3 figures",
+    "(EMBARK-1136): cost -6%, tool calls -6%, turns -14%, exploration time -4%, task resolution +4",
+    "points. The absolute per-task means below are placeholders chosen to reproduce exactly those",
+    "ratios, and are to be replaced by a harbor_eval_summary export.",
+    "",
+    "The small-repo effects being several times smaller than the monorepo ones is the point of keeping",
+    "size in the cell key: the per-metric ratios between the two differ (cost ~0.17, tool calls ~0.18,",
+    "turns ~0.34), so no single per-size multiplier could fit them all."
+  ],
+  "schema": "jbcontext-eval-arm/1",
+  "arm": "baseline",
+  "dataset": "oss-swe-bench",
+  "harness": "claude-code",
+  "model": "claude-opus-4-8",
+  "effort": "high",
+  "taskCount": 205,
+  "resolvedRate": 0.50,
+  "metrics": {
+    "costUsd": 1.0,
+    "toolCalls": 50.0,
+    "turns": 10.0,
+    "latencyMs": 100000
+  }
+}

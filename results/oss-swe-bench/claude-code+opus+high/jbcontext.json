@@ -1,0 +1,26 @@
+{
+  "$comment": [
+    "FIRST ITERATION — see baseline.json. Placeholder magnitudes, measured ratios:",
+    "  cost             1 - 0.94/1.0        = 0.06",
+    "  toolCalls        1 - 47.0/50.0       = 0.06",
+    "  turns            1 - 8.6/10.0        = 0.14",
+    "  explorationTime  1 - 96000/100000    = 0.04",
+    "  resolvedRate     0.54 - 0.50         = +0.04 (reported as a signed resolution change, never as",
+    "                                         a saving)"
+  ],
+  "schema": "jbcontext-eval-arm/1",
+  "arm": "jbcontext",
+  "dataset": "oss-swe-bench",
+  "harness": "claude-code",
+  "model": "claude-opus-4-8",
+  "effort": "high",
+  "integration": "cli+subagent+hooks",
+  "taskCount": 205,
+  "resolvedRate": 0.54,
+  "metrics": {
+    "costUsd": 0.94,
+    "toolCalls": 47.0,
+    "turns": 8.6,
+    "latencyMs": 96000
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "$comment": [
+    "Private production monorepo, SWE-bench-style tasks. Properties of the TASK SET, so this file is",
+    "written once per dataset and shared by both arms of every cell under it.",
+    "",
+    "`sizeLabel` lives here rather than per task because a per-dataset label is what the eval pipeline",
+    "publishes today. A dataset whose arms carry per-task sizeLabels splits into several rows instead."
+  ],
+  "name": "monorepo-swebench",
+  "sizeLabel": "XL",
+  "files": 1200000,
+  "loc": 48000000,
+  "taskCount": 175
+}
